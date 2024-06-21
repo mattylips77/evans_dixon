@@ -1,0 +1,11 @@
+<div id="<%= dom_id legal_form %>">
+  <p>
+    <strong>Name:</strong>
+    <%= legal_form.name %>
+  </p>
+  <% legal_form.legal_form_questions.where(legal_form_id: legal_form.id).each do  |question| %>
+    <div>
+      <%=question.position %>) <%=question.question %>
+    </div>
+  <% end %>
+</div>

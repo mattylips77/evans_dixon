@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @legal_form_question %>
+
+<div>
+  <%= link_to "Edit this legal form question", edit_legal_form_question_path(@legal_form_question) %> |
+  <%= link_to "Back to legal form questions", legal_form_questions_path %>
+
+  <%= button_to "Destroy this legal form question", @legal_form_question, method: :delete %>
+</div>

@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  question: MyString
+  position: 1
+  options: MyString
+  legal_form: one
+
+two:
+  question: MyString
+  position: 1
+  options: MyString
+  legal_form: two

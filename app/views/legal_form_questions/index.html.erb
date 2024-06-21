@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Legal form questions</h1>
+
+<div id="legal_form_questions">
+  <% @legal_form_questions.each do |legal_form_question| %>
+    <%= render legal_form_question %>
+    <p>
+      <%= link_to "Show this legal form question", legal_form_question %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New legal form question", new_legal_form_question_path %>
