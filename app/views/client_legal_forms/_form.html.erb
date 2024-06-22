@@ -1,0 +1,37 @@
+<%= form_with(model: client_legal_form) do |form| %>
+  <% if client_legal_form.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(client_legal_form.errors.count, "error") %> prohibited this client_legal_form from being saved:</h2>
+
+      <ul>
+        <% client_legal_form.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :client_id, style: "display: block" %>
+    <%= form.text_field :client_id %>
+  </div>
+
+  <div>
+    <%= form.label :legal_form_id, style: "display: block" %>
+    <%= form.text_field :legal_form_id %>
+  </div>
+
+  <div>
+    <%= form.label :first_login_date, style: "display: block" %>
+    <%= form.datetime_field :first_login_date %>
+  </div>
+
+  <div>
+    <%= form.label :most_recent_login, style: "display: block" %>
+    <%= form.datetime_field :most_recent_login %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

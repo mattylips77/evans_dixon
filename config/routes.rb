@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :client_legal_forms
+  resources :clients
   resources :legal_form_questions
   resources :legal_forms
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

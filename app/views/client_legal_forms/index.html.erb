@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Client legal forms</h1>
+
+<div id="client_legal_forms">
+  <% @client_legal_forms.each do |client_legal_form| %>
+    <div style="padding: 5px 0"><%=client_legal_form.client.last_name %>,  <%=client_legal_form.client.first_name %> |
+      <%=client_legal_form.legal_form.name %> |
+      <%= link_to "View Data", client_legal_form %> |
+    </div>
+<% end %>
+</div>
+
+<%= link_to "New client legal form", new_client_legal_form_path %>

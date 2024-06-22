@@ -10,7 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_21_161646) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_22_044219) do
+  create_table "client_answers", force: :cascade do |t|
+    t.integer "client_legal_form_id", null: false
+    t.integer "legal_form_question_id", null: false
+    t.string "answer"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_legal_form_id"], name: "index_client_answers_on_client_legal_form_id"
+    t.index ["legal_form_question_id"], name: "index_client_answers_on_legal_form_question_id"
+  end
+
+  create_table "client_legal_forms", force: :cascade do |t|
+    t.integer "client_id", null: false
+    t.integer "legal_form_id", null: false
+    t.datetime "first_login_date"
+    t.datetime "most_recent_login"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_client_legal_forms_on_client_id"
+    t.index ["legal_form_id"], name: "index_client_legal_forms_on_legal_form_id"
+  end
+
+  create_table "clients", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "middle_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "legal_form_questions", force: :cascade do |t|
     t.string "question"
     t.string "question_type"
@@ -28,5 +57,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_21_161646) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "client_answers", "client_legal_forms"
+  add_foreign_key "client_answers", "legal_form_questions"
+  add_foreign_key "client_legal_forms", "clients"
+  add_foreign_key "client_legal_forms", "legal_forms"
   add_foreign_key "legal_form_questions", "legal_forms"
 end

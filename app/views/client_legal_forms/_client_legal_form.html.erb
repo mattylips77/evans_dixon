@@ -1,0 +1,26 @@
+<div id="<%= dom_id client_legal_form %>">
+  <p>
+    <strong>Client:</strong>
+    <%= client_legal_form.client.last_name %>, <%= client_legal_form.client.first_name %>
+  </p>
+
+  <p>
+    <strong>Legal form:</strong>
+    <%= client_legal_form.legal_form.name %>
+  </p>
+
+  <%@questions.each do |question| %>
+    <div><%=question.position %>) <%=question.question %> </div>
+  <% end %>
+  </p>
+  <p>
+    <strong>First login date:</strong>
+    <%= client_legal_form.first_login_date %>
+  </p>
+
+  <p>
+    <strong>Most recent login:</strong>
+    <%= client_legal_form.most_recent_login %>
+  </p>
+
+</div>

@@ -8,6 +8,7 @@ class LegalFormsController < ApplicationController
 
   # GET /legal_forms/1 or /legal_forms/1.json
   def show
+    @questions = LegalForm.find(params[:id]).legal_form_questions.all
   end
 
   # GET /legal_forms/new
