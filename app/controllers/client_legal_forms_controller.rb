@@ -8,7 +8,9 @@ class ClientLegalFormsController < ApplicationController
 
   # GET /client_legal_forms/1 or /client_legal_forms/1.json
   def show
-    @questions = ClientLegalForm.find(params[:id]).legal_form.legal_form_questions.all
+    @questions =  ClientLegalForm.first.legal_form.legal_form_questions.all.left_joins(:client_answers)
+                                 .select('legal_form_questions.question, legal_form_questions.position, client_answers.answer')
+
   end
 
   # GET /client_legal_forms/new

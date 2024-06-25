@@ -8,11 +8,9 @@
     <strong>Legal form:</strong>
     <%= client_legal_form.legal_form.name %>
   </p>
-
-  <%@questions.each do |question| %>
-    <div><%=question.position %>) <%=question.question %> </div>
+  <% @questions.each do |question| %>
+    <div><%=question.position %>) <%=question.question %>: <%=question.answer %></div>
   <% end %>
-  </p>
   <p>
     <strong>First login date:</strong>
     <%= client_legal_form.first_login_date %>
