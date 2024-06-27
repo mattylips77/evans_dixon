@@ -9,7 +9,7 @@
     <%= client_legal_form.legal_form.name %>
   </p>
   <% @questions.each do |question| %>
-    <div><%=question.position %>) <%=question.question %>: <%=question.answer %></div>
+    <div><%=question.position %>) <%=question.question %>: <%=question.answer || "No Answer"%></div>
   <% end %>
   <p>
     <strong>First login date:</strong>

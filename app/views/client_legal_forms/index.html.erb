@@ -2,13 +2,19 @@
 
 <h1>Client legal forms</h1>
 
-<div id="client_legal_forms">
-  <% @client_legal_forms.each do |client_legal_form| %>
-    <div style="padding: 5px 0"><%=client_legal_form.client.last_name %>,  <%=client_legal_form.client.first_name %> |
-      <%=client_legal_form.legal_form.name %> |
-      <%= link_to "View Data", client_legal_form %> |
-    </div>
+
+<div id="client_legal_forms" class="grid grid-cols-3 w-3/5">
+  <div class="font-bold">Client Name</div>
+  <div class="font-bold">Form Type</div>
+  <div></div>
+  <% bg_color = "bg-slate-100" %>
+  <% @client_legal_forms.each.with_index do |client_legal_form, index| %>
+    <% bg_color = index.even? ? "bg-slate-50" : "bg-slate-200"  %>
+    <div class="py-2 <%=bg_color%>"><%=client_legal_form.client.last_name %>,  <%=client_legal_form.client.first_name %></div>
+    <div class="py-2 <%=bg_color%>"><%=client_legal_form.legal_form.name %></div>
+    <div class="py-2 <%=bg_color%>"><%= link_to "View Form", client_legal_form %> | <%= link_to "Export CSV", client_legal_form %></div>
 <% end %>
 </div>
 
 <%= link_to "New client legal form", new_client_legal_form_path %>
+`

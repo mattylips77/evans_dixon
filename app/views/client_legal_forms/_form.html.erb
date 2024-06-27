@@ -13,23 +13,25 @@
 
   <div>
     <%= form.label :client_id, style: "display: block" %>
-    <%= form.text_field :client_id %>
+    <%= form.select :client_id, Client.all.map { |client| [client.first_name, client.id] }%>
   </div>
 
   <div>
     <%= form.label :legal_form_id, style: "display: block" %>
-    <%= form.text_field :legal_form_id %>
+    <%= form.select :legal_form_id, LegalForm.all.map { |legal_form| [legal_form.name, legal_form.id] }%>
+  </div>
+
+<!--
+  <div>
+    <%#= form.label :first_login_date, style: "display: block" %>
+    <%#= form.datetime_field :first_login_date %>
   </div>
 
   <div>
-    <%= form.label :first_login_date, style: "display: block" %>
-    <%= form.datetime_field :first_login_date %>
+    <%#= form.label :most_recent_login, style: "display: block" %>
+    <%#= form.datetime_field :most_recent_login %>
   </div>
-
-  <div>
-    <%= form.label :most_recent_login, style: "display: block" %>
-    <%= form.datetime_field :most_recent_login %>
-  </div>
+-->
 
   <div>
     <%= form.submit %>
