@@ -4,13 +4,15 @@
     <%= client_legal_form.client.last_name %>, <%= client_legal_form.client.first_name %>
   </p>
 
-  <p>
-    <strong>Legal form:</strong>
-    <%= client_legal_form.legal_form.name %>
-  </p>
-  <% @questions.each do |question| %>
-    <div><%=question.position %>) <%=question.question %>: <%=question.answer || "No Answer"%></div>
+  <div class="w-3/5 bg-slate-300 text-slate-700 border border-slate-300 border-solid py-2 pl-2"><strong>Legal form:</strong> <%= client_legal_form.legal_form.name %></div>
+  <div class="w-3/5 grid grid-cols-2 border border-slate-300 border-solid">
+  <% bg_color = 'bg-slate-200' %>
+  <% @questions.each.with_index do |question, index| %>
+    <% bg_color = index.even? ? "bg-slate-50" : "bg-slate-200"  %>
+      <div class="py-2 pl-2 <%=bg_color %>"><%=question['position'] %>) <%=question['question'] %></div>
+      <div class="py-2 pr-2 <%=bg_color %>"><%=question['answer'] || '<span class="text-red-700">No Answer</span>'.html_safe() %></div>
   <% end %>
+  </div>
   <p>
     <strong>First login date:</strong>
     <%= client_legal_form.first_login_date %>

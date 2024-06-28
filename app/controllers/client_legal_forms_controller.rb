@@ -8,14 +8,20 @@ class ClientLegalFormsController < ApplicationController
 
   # GET /client_legal_forms/1 or /client_legal_forms/1.json
   def show
-    @questions =  ClientLegalForm.first.legal_form.legal_form_questions.all.left_joins(:client_answers)
-                                 .select('legal_form_questions.question, legal_form_questions.position, client_answers.answer')
-
+    # @questions =  ClientLegalForm.find(params[:id]).legal_form.legal_form_questions.all.left_joins(:client_answers)
+    #.select('legal_form_questions.question, legal_form_questions.position, client_answers.answer')
+    @questions = ActiveRecord::Base.connection.execute("SELECT name, position, question, answer from client_legal_forms
+                                                            JOIN legal_forms ON legal_forms.id = client_legal_forms.legal_form_id
+                                                            JOIN legal_form_questions ON legal_forms.id = legal_form_questions.legal_form_id
+                                                            LEFT JOIN client_answers ON legal_form_questions.id = client_answers.legal_form_question_id AND client_legal_forms.id = client_answers.id
+                                                            WHERE client_legal_forms.id = #{params[:id]}")
   end
 
   # GET /client_legal_forms/new
   def new
     @client_legal_form = ClientLegalForm.new
+    @client_dropdown = Client.all.map { |client| [client.first_name, client.id] }
+    @legal_form_dropdown = LegalForm.all.map { |legal_form| [legal_form.name, legal_form.id] }
   end
 
   # GET /client_legal_forms/1/edit
