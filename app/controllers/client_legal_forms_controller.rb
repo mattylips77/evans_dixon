@@ -13,16 +13,11 @@ class ClientLegalFormsController < ApplicationController
   end
 
   def userEdit
-    @formHash = params[:id]
-    puts 'myhash'
-    puts params[:id]
-    @client_legal_form = ClientLegalForm.where(form_hash: params[:id]).first
-
-    @answers = ClientAnswer.where(client_legal_form_id: @client_legal_form.id)
-
-    # client_legal_form = ClientLegalForm.find(params[:id])
-    # @answers = ClientAnswer.where(client_legal_form_id: params[:id])
-    # @questions = LegalFormQuestion.where(legal_form_id: client_legal_form.legal_form_id)
+    client_legal_form_id = ClientLegalForm.where(form_hash: params[:id]).first.id
+    puts "legal_form_id"
+    puts client_legal_form_id
+    @client_legal_form_input = ClientLegalForm.find(client_legal_form_id)
+    @client_legal_form_input.client_answers.build if @client_legal_form_input.client_answers.empty?
   end
 
   # GET /client_legal_forms/new

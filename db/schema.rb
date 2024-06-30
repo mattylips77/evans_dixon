@@ -14,7 +14,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_22_044219) do
   create_table "client_answers", force: :cascade do |t|
     t.integer "client_legal_form_id", null: false
     t.string "question"
-    t.decimal "position"
+    t.integer "position"
     t.string "question_type"
     t.string "options"
     t.string "answer"
