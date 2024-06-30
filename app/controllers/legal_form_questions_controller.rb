@@ -13,6 +13,7 @@ class LegalFormQuestionsController < ApplicationController
   # GET /legal_form_questions/new
   def new
     @legal_form_question = LegalFormQuestion.new
+    @legal_form_dropdown = LegalForm.all.map { |legal_form| [legal_form.name, legal_form.id] }
   end
 
   # GET /legal_form_questions/1/edit

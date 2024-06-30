@@ -8,13 +8,21 @@ class ClientLegalFormsController < ApplicationController
 
   # GET /client_legal_forms/1 or /client_legal_forms/1.json
   def show
-    # @questions =  ClientLegalForm.find(params[:id]).legal_form.legal_form_questions.all.left_joins(:client_answers)
-    #.select('legal_form_questions.question, legal_form_questions.position, client_answers.answer')
-    @questions = ActiveRecord::Base.connection.execute("SELECT name, position, question, answer from client_legal_forms
-                                                            JOIN legal_forms ON legal_forms.id = client_legal_forms.legal_form_id
-                                                            JOIN legal_form_questions ON legal_forms.id = legal_form_questions.legal_form_id
-                                                            LEFT JOIN client_answers ON legal_form_questions.id = client_answers.legal_form_question_id AND client_legal_forms.id = client_answers.id
-                                                            WHERE client_legal_forms.id = #{params[:id]}")
+    client_legal_form = ClientLegalForm.find(params[:id])
+    @answers = ClientAnswer.where(client_legal_form_id: params[:id])
+  end
+
+  def userEdit
+    @formHash = params[:id]
+    puts 'myhash'
+    puts params[:id]
+    @client_legal_form = ClientLegalForm.where(form_hash: params[:id]).first
+
+    @answers = ClientAnswer.where(client_legal_form_id: @client_legal_form.id)
+
+    # client_legal_form = ClientLegalForm.find(params[:id])
+    # @answers = ClientAnswer.where(client_legal_form_id: params[:id])
+    # @questions = LegalFormQuestion.where(legal_form_id: client_legal_form.legal_form_id)
   end
 
   # GET /client_legal_forms/new
@@ -31,9 +39,27 @@ class ClientLegalFormsController < ApplicationController
   # POST /client_legal_forms or /client_legal_forms.json
   def create
     @client_legal_form = ClientLegalForm.new(client_legal_form_params)
-
+    puts "client legal form"
+    puts @client_legal_form
+    legal_form_questions = LegalFormQuestion.where(legal_form_id: client_legal_form_params['legal_form_id'])
     respond_to do |format|
       if @client_legal_form.save
+        legal_form_questions.each do |legal_form|
+          client_answer = ClientAnswer.new({:question => legal_form.question,
+                                            :position => legal_form.position,
+                                            :options => legal_form.options,
+                                            :question_type => legal_form.question_type,
+                                            :client_legal_form_id => @client_legal_form.id
+                                           })
+          puts "new client answer"
+          puts client_answer
+          if client_answer.save
+            puts "client answer saved"
+          else
+            puts "client answer not saved"
+            puts client_answer.errors
+          end
+        end
         format.html { redirect_to client_legal_form_url(@client_legal_form), notice: "Client legal form was successfully created." }
         format.json { render :show, status: :created, location: @client_legal_form }
       else
@@ -70,10 +96,11 @@ class ClientLegalFormsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_client_legal_form
       @client_legal_form = ClientLegalForm.find(params[:id])
+      puts 'before matt test'
     end
 
     # Only allow a list of trusted parameters through.
     def client_legal_form_params
-      params.require(:client_legal_form).permit(:client_id, :legal_form_id, :first_login_date, :most_recent_login)
+      params.require(:client_legal_form).permit(:client_id, :legal_form_id, :first_login_date, :most_recent_login, :form_hash)
     end
 end

@@ -12,6 +12,11 @@
   <% end %>
 
   <div>
+    <%= form.label :legal_form_id, style: "display: block" %>
+    <%= form.select :legal_form_id, @legal_form_dropdown.unshift(['--Select a Form--', 0]) %>
+  </div>
+
+  <div>
     <%= form.label :question, style: "display: block" %>
     <%= form.text_field :question %>
   </div>
@@ -29,11 +34,6 @@
   <div>
     <%= form.label :options, style: "display: block" %>
     <%= form.text_field :options %>
-  </div>
-
-  <div>
-    <%= form.label :legal_form_id, style: "display: block" %>
-    <%= form.text_field :legal_form_id %>
   </div>
 
   <div>

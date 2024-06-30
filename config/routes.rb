@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :client_legal_forms
+  get '/myForm/:id', to: 'client_legal_forms#userEdit'
   resources :clients
   resources :legal_form_questions
   resources :legal_forms
