@@ -1,3 +1,4 @@
+<%=testVar %>
 <div id="<%= dom_id client_legal_form %>">
   <h1>This will be the user form.  Don't confuse with the amdin section </h1>
   <p>
@@ -5,12 +6,12 @@
     <%= client_legal_form.client.last_name %>, <%= client_legal_form.client.first_name %>
   </p>
 
-<%= form_with model: @client_legal_form_input do |f| %>
+<%= form_with model: @client_data_entries do |f| %>
   <div class="w-3/5 bg-slate-300 text-slate-700 border border-slate-300 border-solid py-2 pl-2"><strong>Legal form:</strong> <%= client_legal_form.legal_form.name %></div>
   <div class="w-3/5 grid grid-cols-2 border border-slate-300 border-solid">
   <% bg_color = 'bg-slate-200' %>
   <%= f.fields_for :client_answers do |client_answer_form| %>
-    <%# bg_color = "bg-slate-50"# f.options[:child_index].even? ? "bg-slate-50" : "bg-slate-200"  %>
+    <% bg_color = "bg-slate-50"# f.options[:child_index].even? ? "bg-slate-50" : "bg-slate-200"  %>
     <div class="py-2 pl-2 <%=bg_color %>"><%=client_answer_form.object.position %>) <%=client_answer_form.object.question %></div>
     <div class="py-2 pr-2 <%=bg_color %>"><%= client_answer_form.text_field :answer %></div>
   <% end %>

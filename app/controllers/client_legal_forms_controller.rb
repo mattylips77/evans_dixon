@@ -10,14 +10,7 @@ class ClientLegalFormsController < ApplicationController
   def show
     client_legal_form = ClientLegalForm.find(params[:id])
     @answers = ClientAnswer.where(client_legal_form_id: params[:id])
-  end
 
-  def userEdit
-    client_legal_form_id = ClientLegalForm.where(form_hash: params[:id]).first.id
-    puts "legal_form_id"
-    puts client_legal_form_id
-    @client_legal_form_input = ClientLegalForm.find(client_legal_form_id)
-    @client_legal_form_input.client_answers.build if @client_legal_form_input.client_answers.empty?
   end
 
   # GET /client_legal_forms/new
@@ -34,8 +27,10 @@ class ClientLegalFormsController < ApplicationController
   # POST /client_legal_forms or /client_legal_forms.json
   def create
     @client_legal_form = ClientLegalForm.new(client_legal_form_params)
-    puts "client legal form"
-    puts @client_legal_form
+
+    form_hash = generateHash
+    @client_legal_form.form_hash = form_hash
+
     legal_form_questions = LegalFormQuestion.where(legal_form_id: client_legal_form_params['legal_form_id'])
     respond_to do |format|
       if @client_legal_form.save
@@ -97,5 +92,13 @@ class ClientLegalFormsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def client_legal_form_params
       params.require(:client_legal_form).permit(:client_id, :legal_form_id, :first_login_date, :most_recent_login, :form_hash)
+    end
+
+    def generateHash
+      @random_string = SecureRandom.alphanumeric(36)
+      if ClientLegalForm.where(:form_hash => @random_string).count > 0
+        @random_string = generateHash
+      end
+      @random_string
     end
 end
