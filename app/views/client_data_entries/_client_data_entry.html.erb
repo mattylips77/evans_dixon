@@ -1,0 +1,21 @@
+<div id="<%= dom_id client_data_entry %>">
+  <h1>This will be the user form.  Don't confuse with the admin section </h1>
+  <p>
+    <strong>Client:</strong>
+    <%= client_data_entry.client.last_name %>, <%= client_data_entry.client.first_name %>
+  </p>
+  <%= form_with model: @client_data_entry, url: "/client_data_entries/#{params[:id]}", method: "patch" do |f| %>
+    <div class="w-3/5 bg-slate-300 text-slate-700 border border-slate-300 border-solid py-2 pl-2"><strong>Legal form:</strong> <%= client_data_entry.legal_form.name %></div>
+    <div class="w-3/5 grid grid-cols-2 border border-slate-300 border-solid">
+      <% bg_color = 'bg-slate-200' %>
+      <%= f.fields_for :client_answers do |client_answer_form| %>
+
+        <% bg_color = "bg-slate-50"# f.options[:child_index].even? ? "bg-slate-50" : "bg-slate-200"  %>
+        <div class="py-2 pl-2 <%=bg_color %>"><%=client_answer_form.object.position %>) <%=client_answer_form.object.question %></div>
+        <div class="py-2 pr-2 <%=bg_color %>"><%= client_answer_form.text_field :answer %></div>
+      <% end %>
+    </div>
+    <%= f.submit %>
+  <% end  %>
+</div>
+
