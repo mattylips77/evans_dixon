@@ -78,4 +78,14 @@ class ClientAnswersController < ApplicationController
   def client_data_entry_params
     params.require(:client_legal_form).permit(client_answers_attributes: [:answer])
   end
+
+  def generate_csv(client_answers)
+    CSV.generate(headers: true) do |csv|
+      csv << ["Question", "Answer"] # Add your desired headers
+
+      client_answers.each do |client_answer|
+        csv << [client_answer.question, client_answer.answer] # Add your desired fields
+      end
+    end
+  end
 end

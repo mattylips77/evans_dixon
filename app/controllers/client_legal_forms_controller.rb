@@ -1,3 +1,5 @@
+require 'csv'
+
 class ClientLegalFormsController < ApplicationController
   before_action :set_client_legal_form, only: %i[ show edit update destroy ]
 
@@ -10,7 +12,7 @@ class ClientLegalFormsController < ApplicationController
   def show
     client_legal_form = ClientLegalForm.find(params[:id])
     @answers = ClientAnswer.where(client_legal_form_id: params[:id])
-
+    @client_legal_form_id = params[:id]
   end
 
   # GET /client_legal_forms/new
@@ -82,6 +84,12 @@ class ClientLegalFormsController < ApplicationController
     end
   end
 
+  def download_csv
+    respond_to do |format|
+      format.csv { send_data generate_csv(ClientAnswer.where(client_legal_form_id: params[:formID])), filename: "completed_form-#{Date.today}.csv" }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_client_legal_form
@@ -101,4 +109,14 @@ class ClientLegalFormsController < ApplicationController
       end
       @random_string
     end
+
+  def generate_csv(client_answers)
+    CSV.generate(headers: true) do |csv|
+      csv << ["Question", "Answer"] # Add your desired headers
+
+      client_answers.each do |client_answer|
+        csv << [client_answer.question, client_answer.answer] # Add your desired fields
+      end
+    end
+  end
 end

@@ -1,3 +1,5 @@
+require 'csv'
+
 class ClientsController < ApplicationController
   before_action :set_client, only: %i[ show edit update destroy ]
 
@@ -62,8 +64,6 @@ class ClientsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_client
-      puts "params"
-      puts params
       @client = Client.find(params[:id])
     end
 

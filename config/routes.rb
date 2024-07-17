@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get '/myForm/:id', to: 'client_legal_forms#userEdit'
   get '/hashError', to: 'home#bad_hash'
   get '/clientSuccess', to: 'home#client_success'
+  get '/downloadCsv/:id', to: 'client_answers#download_csv'
   resources :clients
   resources :legal_form_questions
   resources :legal_forms

@@ -13,6 +13,8 @@
       <div class="py-2 pr-2 <%=bg_color %>"><%=answer.answer || '<span class="text-red-700">No Answer</span>'.html_safe() %></div>
   <% end %>
   </div>
+  <%= link_to "Download CSV", download_csv_client_legal_forms_path(format: :csv, formID: @client_legal_form_id), class: 'bg-blue-950 text-white text-lg inline p-2'%>
+
   <p>
     <strong>First login date:</strong>
     <%= client_legal_form.first_login_date %>
