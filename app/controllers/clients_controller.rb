@@ -37,6 +37,8 @@ class ClientsController < ApplicationController
   # PATCH/PUT /clients/1 or /clients/1.json
   def update
     respond_to do |format|
+      puts "client params"
+      puts client_params
       if @client.update(client_params)
         format.html { redirect_to client_url(@client), notice: "Client was successfully updated." }
         format.json { render :show, status: :ok, location: @client }
@@ -60,6 +62,8 @@ class ClientsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_client
+      puts "params"
+      puts params
       @client = Client.find(params[:id])
     end
 

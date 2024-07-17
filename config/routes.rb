@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
   resources :client_data_entries
-  resources :client_legal_forms
+  resources :client_legal_forms do
+    collection do
+      get :download_csv
+    end
+  end
   get '/myForm/:id', to: 'client_legal_forms#userEdit'
   get '/hashError', to: 'home#bad_hash'
+  get '/clientSuccess', to: 'home#client_success'
   resources :clients
   resources :legal_form_questions
   resources :legal_forms
