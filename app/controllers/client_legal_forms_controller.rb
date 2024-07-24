@@ -86,7 +86,9 @@ class ClientLegalFormsController < ApplicationController
 
   def download_csv
     respond_to do |format|
-      format.csv { send_data generate_csv(ClientAnswer.where(client_legal_form_id: params[:formID])), filename: "completed_form-#{Date.today}.csv" }
+      @ClientAnswer = ClientAnswer.where(client_legal_form_id: params[:formID])
+      @ClientLegalForm = ClientLegalForm.find(params[:formID])
+      format.csv { send_data generate_csv(@ClientAnswer), filename: "completed_form-#{@ClientLegalForm.most_recent_login.strftime("%Y-%m-%d_%H-%M")}.csv" }
     end
   end
 

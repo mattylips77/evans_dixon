@@ -10,12 +10,22 @@ class ClientDataEntriesController < ApplicationController
   end
 
   def update
-    puts 'output test'
     params[:client_legal_form][:client_answers_attributes].each do |answer|
       @ClientAnswer =  ClientAnswer.find(answer[1][:id])
       @ClientAnswer.answer = answer[1][:answer]
       @ClientAnswer.save
     end
+
+    @ClientLegalForm = ClientLegalForm.where(form_hash: params[:id])[0]
+
+    if @ClientLegalForm.first_login_date.nil?
+      @ClientLegalForm.first_login_date = Time.current
+    end
+
+    @ClientLegalForm.most_recent_login = Time.current
+
+    @ClientLegalForm.save
+
     redirect_to("/clientSuccess")
   end
 
