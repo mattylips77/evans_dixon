@@ -2,18 +2,18 @@
 
 <h1>Clients</h1>
 
-<div id="client_legal_forms" class="grid grid-cols-4 w-3/5 border border-slate-300 border-solid">
-  <div class="font-bold">Last Name</div>
-  <div class="font-bold">First Name</div>
-  <div class="font-bold">Middle Name</div>
+<div id="client_legal_forms" class="grid grid-cols-2 w-3/5 border border-slate-300 border-solid">
+  <div class="font-bold">Name</div>
   <div></div>
   <% bg_color = "bg-slate-100" %>
   <% @clients.each.with_index do |client, index| %>
     <% bg_color = index.even? ? "bg-slate-50" : "bg-slate-200"  %>
-    <div class="py-2 pl-2 <%=bg_color%>"><%=client.last_name %></div>
-    <div class="py-2 <%=bg_color%>"><%=client.first_name %></div>
-    <div class="py-2 <%=bg_color%>"><%=client.middle_name %></div>
-    <div class="py-2 pr-2 <%=bg_color%>"><%= link_to "Edit this client", edit_client_path(client.id) %></div>
+    <div class="py-2 pl-2 <%=bg_color%>"><%=client.last_name %>, <%=client.first_name %> <%=client.middle_name %></div>
+    <div class="py-2 pr-2 <%=bg_color%>">
+      <%= link_to "Edit this client", edit_client_path(client.id) %> |
+      <%= link_to "View Clients Forms", forms_by_client_client_legal_form_path(client.id) %> |
+      <%= link_to "Add Form", new_for_client_client_legal_form_path(client.id) %>
+    </div>
   <% end %>
 </div>
 

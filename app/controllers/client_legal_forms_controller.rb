@@ -17,9 +17,20 @@ class ClientLegalFormsController < ApplicationController
 
   # GET /client_legal_forms/new
   def new
-    @client_legal_form = ClientLegalForm.new
     @client_dropdown = Client.all.map { |client| [client.first_name, client.id] }
+    @client_legal_form = ClientLegalForm.new
     @legal_form_dropdown = LegalForm.all.map { |legal_form| [legal_form.name, legal_form.id] }
+  end
+
+  def new_for_client
+    @client = Client.find(params[:id])
+    @client_legal_form = ClientLegalForm.new
+    @legal_form_dropdown = LegalForm.all.map { |legal_form| [legal_form.name, legal_form.id] }
+  end
+
+  def forms_by_client
+    @client = Client.find(params[:id])
+    @client_legal_forms = ClientLegalForm.where(client_id: params[:id])
   end
 
   # GET /client_legal_forms/1/edit
@@ -96,7 +107,6 @@ class ClientLegalFormsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_client_legal_form
       @client_legal_form = ClientLegalForm.find(params[:id])
-      puts 'before matt test'
     end
 
     # Only allow a list of trusted parameters through.

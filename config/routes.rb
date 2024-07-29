@@ -4,6 +4,13 @@ Rails.application.routes.draw do
     collection do
       get :download_csv
     end
+    member do
+      get '/new_for_client/', to: "client_legal_forms#new_for_client"
+    end
+
+    member do
+      get '/forms_by_client/', to: "client_legal_forms#forms_by_client"
+    end
   end
   get '/myForm/:id', to: 'client_legal_forms#userEdit'
   get '/hashError', to: 'home#bad_hash'
