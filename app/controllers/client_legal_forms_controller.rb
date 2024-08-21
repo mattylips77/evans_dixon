@@ -19,7 +19,7 @@ class ClientLegalFormsController < ApplicationController
   def new
     @client_dropdown = Client.all.map { |client| [client.first_name, client.id] }
     @client_legal_form = ClientLegalForm.new
-    @legal_form_dropdown = LegalForm.all.map { |legal_form| [legal_form.name, legal_form.id] }
+    @legal_form_dropdown = LegalForm.where(isSubform: false).map { |legal_form| [legal_form.name, legal_form.id] }
   end
 
   def new_for_client
@@ -63,7 +63,7 @@ class ClientLegalFormsController < ApplicationController
             puts client_answer.errors
           end
         end
-        format.html { redirect_to client_legal_form_url(@client_legal_form), notice: "Client legal form was successfully created." }
+        format.html { redirect_to client_legal_forms_path, notice: "Client legal form was successfully created." }
         format.json { render :show, status: :created, location: @client_legal_form }
       else
         format.html { render :new, status: :unprocessable_entity }

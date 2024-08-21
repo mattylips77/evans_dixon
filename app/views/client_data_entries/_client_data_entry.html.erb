@@ -12,7 +12,18 @@
 
         <% bg_color = "bg-slate-50"# f.options[:child_index].even? ? "bg-slate-50" : "bg-slate-200"  %>
         <div class="py-2 pl-2 <%=bg_color %>"><%=client_answer_form.object.position %>) <%=client_answer_form.object.question %></div>
-        <div class="py-2 pr-2 <%=bg_color %>"><%= client_answer_form.text_field :answer %></div>
+
+        <div class="py-2 pr-2 <%=bg_color %>">
+          <% if client_answer_form.object.question_type === 'Text' %>
+            <%= client_answer_form.text_field :answer %>
+          <% elsif client_answer_form.object.question_type === 'Dropdown' %>
+            <%= client_answer_form.select :answer, client_answer_form.object.options.split(',').unshift(['--Select--', 0]) %>
+          <% elsif client_answer_form.object.question_type === 'SubForm' %>
+            <div>
+
+            </div>
+          <% end %>
+        </div>
       <% end %>
     </div>
     <%= f.submit %>

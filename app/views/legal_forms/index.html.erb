@@ -4,7 +4,7 @@
 
 <div id="legal_forms">
   <% @legal_forms.each do |legal_form| %>
-    <p><%= legal_form.name %> <%= link_to "Show this legal form", legal_form %></p>
+    <p><%= legal_form.name %> <%= "(Subform)" if legal_form.isSubform  %>: <%= link_to "Show this legal form", legal_form %></p>
 
   <% end %>
 </div>
