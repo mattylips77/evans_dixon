@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_20_235210) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_23_204214) do
   create_table "client_answers", force: :cascade do |t|
     t.integer "client_legal_form_id", null: false
     t.string "question"
@@ -20,7 +20,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_20_235210) do
     t.string "answer"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "subForm_id"
     t.index ["client_legal_form_id"], name: "index_client_answers_on_client_legal_form_id"
+    t.index ["subForm_id"], name: "index_client_answers_on_subForm_id"
   end
 
   create_table "client_legal_forms", force: :cascade do |t|
@@ -31,8 +33,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_20_235210) do
     t.datetime "most_recent_login"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "subFormQuestion_id"
     t.index ["client_id"], name: "index_client_legal_forms_on_client_id"
     t.index ["legal_form_id"], name: "index_client_legal_forms_on_legal_form_id"
+    t.index ["subFormQuestion_id"], name: "index_client_legal_forms_on_subFormQuestion_id"
   end
 
   create_table "clients", force: :cascade do |t|
@@ -51,7 +55,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_20_235210) do
     t.integer "legal_form_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "subForm_id"
     t.index ["legal_form_id"], name: "index_legal_form_questions_on_legal_form_id"
+    t.index ["subForm_id"], name: "index_legal_form_questions_on_subForm_id"
   end
 
   create_table "legal_forms", force: :cascade do |t|
@@ -62,7 +68,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_20_235210) do
   end
 
   add_foreign_key "client_answers", "client_legal_forms"
+  add_foreign_key "client_answers", "legal_forms", column: "subForm_id"
+  add_foreign_key "client_legal_forms", "client_answers", column: "subFormQuestion_id"
   add_foreign_key "client_legal_forms", "clients"
   add_foreign_key "client_legal_forms", "legal_forms"
   add_foreign_key "legal_form_questions", "legal_forms"
+  add_foreign_key "legal_form_questions", "legal_forms", column: "subForm_id"
 end

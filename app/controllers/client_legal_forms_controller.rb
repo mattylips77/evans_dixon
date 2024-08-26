@@ -33,6 +33,10 @@ class ClientLegalFormsController < ApplicationController
     @client_legal_forms = ClientLegalForm.where(client_id: params[:id])
   end
 
+  def sub_form
+    @test= "mytest"
+  end
+
   # GET /client_legal_forms/1/edit
   def edit
   end

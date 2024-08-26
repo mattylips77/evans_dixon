@@ -1,12 +1,20 @@
 class ClientDataEntriesController < ApplicationController
+  layout "overlay", only: [:sub_form]
   def show
     client_legal_form = ClientLegalForm.where(form_hash: params[:id])
     if client_legal_form.count > 0
       @client_data_entry = ClientLegalForm.find(client_legal_form.first.id)
-      @client_data_entry.client_answers.build if @client_data_entry.client_answers.empty?
+      # @client_data_entry.client_answers.build if @client_data_entry.client_answers.empty?
+
     else
+=begin
       redirect_to("/hashError")
+=end
     end
+  end
+
+  def sub_form
+    @client_data_entry = ClientLegalForm.find(params[:id])
   end
 
   def update

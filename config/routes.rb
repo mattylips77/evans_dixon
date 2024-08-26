@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :client_data_entries
+  resources :client_data_entries do
+    member do
+      get 'sub_form', to: "client_data_entries#sub_form"
+    end
+  end
   resources :client_legal_forms do
     collection do
       get :download_csv
@@ -7,11 +11,11 @@ Rails.application.routes.draw do
     member do
       get '/new_for_client/', to: "client_legal_forms#new_for_client"
     end
-
     member do
       get '/forms_by_client/', to: "client_legal_forms#forms_by_client"
     end
   end
+  get '/subForm/:id', to: 'client_data_entries#subForm'
   get '/myForm/:id', to: 'client_legal_forms#userEdit'
   get '/hashError', to: 'home#bad_hash'
   get '/clientSuccess', to: 'home#client_success'

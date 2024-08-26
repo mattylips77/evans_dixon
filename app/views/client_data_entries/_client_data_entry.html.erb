@@ -19,8 +19,9 @@
           <% elsif client_answer_form.object.question_type === 'Dropdown' %>
             <%= client_answer_form.select :answer, client_answer_form.object.options.split(',').unshift(['--Select--', 0]) %>
           <% elsif client_answer_form.object.question_type === 'SubForm' %>
-            <div>
-
+            <div data-controller="subform" data-subform-question-value="<%=client_answer_form.object.id %>">
+              question ID: <%=client_answer_form.object.legal_form.name %><br />
+              form ID: <%#=client_answer_form.object.client_legal_form.name %>
             </div>
           <% end %>
         </div>
