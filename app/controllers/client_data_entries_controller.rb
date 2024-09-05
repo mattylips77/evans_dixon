@@ -7,9 +7,7 @@ class ClientDataEntriesController < ApplicationController
       # @client_data_entry.client_answers.build if @client_data_entry.client_answers.empty?
 
     else
-=begin
       redirect_to("/hashError")
-=end
     end
   end
 
@@ -18,10 +16,18 @@ class ClientDataEntriesController < ApplicationController
   end
 
   def update
+    puts 'update - client answers'
+    puts params[:client_legal_form]
+    puts params[:client_legal_form][:client_answers_attributes]
     params[:client_legal_form][:client_answers_attributes].each do |answer|
+      puts 'saveing asnwers'
+      puts answer[1]
       @ClientAnswer =  ClientAnswer.find(answer[1][:id])
       @ClientAnswer.answer = answer[1][:answer]
-      @ClientAnswer.save
+      puts 'answer updated'
+      puts @ClientAnswer.answer
+      puts @ClientAnswer.save
+      puts @ClientAnswer.errors.full_messages.join(", ")
     end
 
     @ClientLegalForm = ClientLegalForm.where(form_hash: params[:id])[0]
@@ -31,7 +37,6 @@ class ClientDataEntriesController < ApplicationController
     end
 
     @ClientLegalForm.most_recent_login = Time.current
-
     @ClientLegalForm.save
 
     redirect_to("/clientSuccess")

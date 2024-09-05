@@ -21,8 +21,8 @@
           <% elsif client_answer_form.object.question_type === 'SubForm' %>
             <div data-controller="subform">
               <button data-action="subform#addForm">Add <%=client_answer_form.object.legal_form.name %></button>
-              <div data-subform-target="overlay" class="size-full bg-black opacity-80 fixed top-0 left-0 hidden" data-action="click->subform#closeOverlay">
-                <div class="w-4/5 h-60 bg-white mx-auto mt-5">test</div>
+              <div data-subform-target="overlay" class="size-full bg-[rgba(0,0,0,0.7)] fixed top-0 left-0 hidden" data-action="click->subform#closeOverlay">
+                <div data-subform-target="subformbody" class="w-4/5 min-h-52 bg-white mx-auto mt-5 p-10"></div>
               </div>
             </div>
           <% end %>
