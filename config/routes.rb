@@ -3,6 +3,9 @@ Rails.application.routes.draw do
     member do
       get 'sub_form', to: "client_data_entries#sub_form"
     end
+    member do
+      get 'sub_form_list', to: "client_data_entries#sub_form_list"
+    end
   end
   resources :client_legal_forms do
     collection do

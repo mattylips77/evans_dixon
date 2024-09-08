@@ -1,0 +1,9 @@
+<div>
+  <% if @subform_list.length > 0 %>
+    <% @subform_list.each do |subform| %>
+      <%= subform.client_answers[0].answer %> <button data-action="subform#editForm" data-subformid="<%=subform.id%>">Edit Form</button> <button>Delete</button>
+    <% end %>
+  <% else %>
+    <div>No Forms</div>
+  <% end %>
+</div>

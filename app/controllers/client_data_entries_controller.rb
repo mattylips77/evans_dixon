@@ -1,5 +1,5 @@
 class ClientDataEntriesController < ApplicationController
-  layout "overlay", only: [:sub_form]
+  layout "overlay", only: [:sub_form, :sub_form_list]
   def show
     client_legal_form = ClientLegalForm.where(form_hash: params[:id])
     if client_legal_form.count > 0
@@ -13,6 +13,10 @@ class ClientDataEntriesController < ApplicationController
 
   def sub_form
     @client_data_entry = ClientLegalForm.find(params[:id])
+  end
+
+  def sub_form_list
+    @subform_list = ClientLegalForm.where(subFormQuestion_id: params[:id])
   end
 
   def update
