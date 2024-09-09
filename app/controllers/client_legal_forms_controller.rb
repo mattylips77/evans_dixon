@@ -92,10 +92,11 @@ class ClientLegalFormsController < ApplicationController
   # DELETE /client_legal_forms/1 or /client_legal_forms/1.json
   def destroy
     @client_legal_form.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to client_legal_forms_url, notice: "Client legal form was successfully destroyed." }
-      format.json { head :no_content }
+    unless params[:stimulus]
+      respond_to do |format|
+        format.html { redirect_to client_legal_forms_url, notice: "Client legal form was successfully destroyed." }
+        format.json { head :no_content }
+      end
     end
   end
 
@@ -115,7 +116,7 @@ class ClientLegalFormsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def client_legal_form_params
-      params.require(:client_legal_form).permit(:client_id, :legal_form_id, :first_login_date, :most_recent_login, :form_hash)
+      params.require(:client_legal_form).permit(:client_id, :legal_form_id, :first_login_date, :most_recent_login, :form_hash, :subFormQuestion_id, :stimulus)
     end
 
     def generateHash

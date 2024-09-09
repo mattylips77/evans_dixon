@@ -7,7 +7,11 @@ export default class extends Controller {
         e.stopPropagation()
     }
 
-    initialize = async () => {
+    initialize = () => {
+        this.loadSubforms();
+    }
+
+    loadSubforms = async () => {
         try {
             const response = await fetch('/client_data_entries/111/sub_form_list');
             if (response.ok) {
@@ -21,23 +25,62 @@ export default class extends Controller {
 
     closeOverlay = (e) => {
         e.stopPropagation();
+        this.loadSubforms();
         this.overlayTarget.classList.add("hidden")
     }
 
     editForm = async (e) => {
         e.preventDefault()
         const url = `/client_data_entries/${e.currentTarget.dataset.subformid}/sub_form`
-        this.openOverlay(url)
+        const params = {
+            method: 'GET'
+        }
+        this.openOverlay(url, params)
     }
 
     addForm = async (e) => {
+        const csrfToken =  document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        const url = `/client_legal_forms`
+        const data = {
+            client_id: 1,
+            legal_form_id: 4,
+            subFormQuestion_id: 111
+        }
+        const params = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // Send JSON data
+                'X-CSRF-Token': csrfToken,  // Include the CSRF token in the headers
+            },
+            body: JSON.stringify(data),
+        }
+        this.openOverlay(url, params)
         e.preventDefault();
-        const url =
     }
 
-    openOverlay = async (url) => {
+    deleteForm = async (e) => {
+        e.preventDefault()
+        const csrfToken =  document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         try {
-            const response = await fetch(url);
+            const response = await fetch(`/client_legal_forms/${e.currentTarget.dataset.subformid}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json', // Send JSON data
+                    'X-CSRF-Token': csrfToken,  // Include the CSRF token in the headers
+                },
+                body: JSON.stringify({stimulus: true})
+            })
+            console.log(response)
+
+            this.loadSubforms();
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    }
+
+    openOverlay = async (url, params) => {
+        try {
+            const response = await fetch(url, params);
             if (response.ok) {
                 const subformHtml = await response.text()
                 this.subformbodyTarget.innerHTML = subformHtml
