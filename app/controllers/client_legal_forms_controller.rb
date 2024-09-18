@@ -30,7 +30,7 @@ class ClientLegalFormsController < ApplicationController
 
   def forms_by_client
     @client = Client.find(params[:id])
-    @client_legal_forms = ClientLegalForm.where(client_id: params[:id])
+    @client_legal_forms = ClientLegalForm.where(client_id: params[:id], subFormQuestion_id: nil)
   end
 
   def sub_form
@@ -47,6 +47,7 @@ class ClientLegalFormsController < ApplicationController
 
     form_hash = generateHash
     @client_legal_form.form_hash = form_hash
+
 
     legal_form_questions = LegalFormQuestion.where(legal_form_id: client_legal_form_params['legal_form_id'])
     respond_to do |format|
@@ -67,7 +68,12 @@ class ClientLegalFormsController < ApplicationController
             puts client_answer.errors
           end
         end
-        format.html { redirect_to client_legal_forms_path, notice: "Client legal form was successfully created." }
+
+        if client_legal_form_params[:subFormQuestion_id]
+          format.html {redirect_to "/client_data_entries/#{@client_legal_form.id}/sub_form"}
+        else
+          format.html { redirect_to client_legal_forms_path, notice: "Client legal form was successfully created." }
+        end
         format.json { render :show, status: :created, location: @client_legal_form }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -130,9 +136,20 @@ class ClientLegalFormsController < ApplicationController
   def generate_csv(client_answers)
     CSV.generate(headers: true) do |csv|
       csv << ["Question", "Answer"] # Add your desired headers
-
       client_answers.each do |client_answer|
-        csv << [client_answer.question, client_answer.answer] # Add your desired fields
+        if client_answer.question_type == "SubForm"
+          puts "subfrom form outer"
+          subforms = ClientLegalForm.where(subFormQuestion_id: client_answer.id)
+          subforms.each do |subform|
+            puts 'subform data'
+            subform.client_answers.each do |subform_answers|
+              puts 'subform answers'
+              csv << [subform_answers.question, subform_answers.answer] # Add your desired fields
+            end
+          end
+        else
+          csv << [client_answer.question, client_answer.answer] # Add your desired fields
+        end
       end
     end
   end

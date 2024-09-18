@@ -1,7 +1,7 @@
 // src/controllers/subform_controller.js
 import {Controller} from "@hotwired/stimulus"
 export default class extends Controller {
-    static targets = ["button", "savedForms", "overlay", "subformbody", "subform_list"];
+    static targets = ["button", "savedForms", "subform_list", "overlay", "subformbody"];
 
     stopPropigation = (e) => {
         e.stopPropagation()
@@ -11,34 +11,7 @@ export default class extends Controller {
         this.loadSubforms();
     }
 
-    loadSubforms = async () => {
-        try {
-            const response = await fetch('/client_data_entries/111/sub_form_list');
-            if (response.ok) {
-                const subformlistHtml = await response.text()
-                this.subform_listTarget.innerHTML = subformlistHtml
-            }
-        } catch (error) {
-            console.error("Fetch error:", error);
-        }
-    }
-
-    closeOverlay = (e) => {
-        e.stopPropagation();
-        this.loadSubforms();
-        this.overlayTarget.classList.add("hidden")
-    }
-
-    editForm = async (e) => {
-        e.preventDefault()
-        const url = `/client_data_entries/${e.currentTarget.dataset.subformid}/sub_form`
-        const params = {
-            method: 'GET'
-        }
-        this.openOverlay(url, params)
-    }
-
-    addForm = async (e) => {
+    newForm = async (e) => {
         const csrfToken =  document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         const url = `/client_legal_forms`
         const data = {
@@ -56,6 +29,20 @@ export default class extends Controller {
         }
         this.openOverlay(url, params)
         e.preventDefault();
+    }
+
+    showForm = async (e) => {
+        e.preventDefault()
+        const url = `/client_data_entries/${e.currentTarget.dataset.subformid}/sub_form`
+        const params = {
+            method: 'GET'
+        }
+        this.openOverlay(url, params)
+    }
+
+    updateForm = async (e) => {
+        e.preventDefault()
+        console.log(e)
     }
 
     deleteForm = async (e) => {
@@ -91,6 +78,24 @@ export default class extends Controller {
         }
 
         this.overlayTarget.classList.remove("hidden")
+    }
+
+    loadSubforms = async () => {
+        try {
+            const response = await fetch('/client_data_entries/111/sub_form_list');
+            if (response.ok) {
+                const subformlistHtml = await response.text()
+                this.subform_listTarget.innerHTML = subformlistHtml
+            }
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    }
+
+    closeOverlay = (e) => {
+        e.stopPropagation();
+        this.loadSubforms();
+        this.overlayTarget.classList.add("hidden")
     }
 
     updateFormList = async () => {
