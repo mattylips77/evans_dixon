@@ -8,8 +8,12 @@
     <div class="py-2 pl-2 <%=bg_color%>"><%=client_legal_form.client.last_name %>,  <%=client_legal_form.client.first_name %> <%=client_legal_form.client.middle_name %></div>
     <div class="py-2 <%=bg_color%>"><%=client_legal_form.legal_form.name %></div>
     <div class="py-2 pr-2 <%=bg_color%>">
-      <%= link_to "View Form", client_legal_form %> |
-      <%= link_to "Export CSV", download_csv_client_legal_forms_path(format: :csv, formID: client_legal_form.id) %>
+      <% if client_legal_form.first_login_date != nil %>
+        <%= link_to "View Form", client_legal_form %> |
+        <%= link_to "Export CSV", download_csv_client_legal_forms_path(format: :csv, formID: client_legal_form.id) %>
+      <% else %>
+        Client has not logged in yet.
+      <% end %>
     </div>
   <% end %>
 </div>

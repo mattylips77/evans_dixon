@@ -9,8 +9,21 @@
   <% bg_color = 'bg-slate-200' %>
   <% @answers.each.with_index do |answer, index| %>
     <% bg_color = index.even? ? "bg-slate-50" : "bg-slate-200"  %>
-      <div class="py-2 pl-2 <%=bg_color %>"><%=answer.position %>) <%=answer.question %></div>
-      <div class="py-2 pr-2 <%=bg_color %>"><%=answer.answer || '<span class="text-red-700">No Answer</span>'.html_safe() %></div>
+      <%  if answer.question_type == "SubForm"  %>
+        <div class="py-2 pl-2 <%=bg_color %>"><%=answer.position %>) <%=answer.question%></div>
+        <div class="py-2 pr-2"></div>
+          <% subforms = answer.get_subform %>
+          <%subforms.each do |subform| %>
+            <% subform.client_answers.each do |answer| %>
+              <div class="py-2 pl-2 <%=bg_color %>"><%=answer.question %></div>
+              <div class="py-2 pr-2 <%=bg_color %>"><%=answer.answer || '<span class="text-red-700">No Answer</span>'.html_safe() %></div>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="py-2 pl-2 <%=bg_color %>"><%=answer.position %>) <%=answer.question %></div>
+        <div class="py-2 pr-2 <%=bg_color %>"><%=answer.answer || '<span class="text-red-700">No Answer</span>'.html_safe() %></div>
+      <% end %>
   <% end %>
   </div>
   <%= link_to "Download CSV", download_csv_client_legal_forms_path(format: :csv, formID: @client_legal_form_id), class: 'bg-blue-950 text-white text-lg inline p-2'%>

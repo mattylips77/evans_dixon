@@ -5,7 +5,7 @@ class ClientLegalFormsController < ApplicationController
 
   # GET /client_legal_forms or /client_legal_forms.json
   def index
-    @client_legal_forms = ClientLegalForm.all
+    @client_legal_forms = ClientLegalForm.where(subFormQuestion_id: nil)
   end
 
   # GET /client_legal_forms/1 or /client_legal_forms/1.json
@@ -18,14 +18,12 @@ class ClientLegalFormsController < ApplicationController
   # GET /client_legal_forms/new
   def new
     @client_dropdown = Client.all.map { |client| [client.first_name, client.id] }
-    @client_legal_form = ClientLegalForm.new
-    @legal_form_dropdown = LegalForm.where(isSubform: false).map { |legal_form| [legal_form.name, legal_form.id] }
+    init_new_client_legal_form
   end
 
   def new_for_client
     @client = Client.find(params[:id])
-    @client_legal_form = ClientLegalForm.new
-    @legal_form_dropdown = LegalForm.all.map { |legal_form| [legal_form.name, legal_form.id] }
+    init_new_client_legal_form
   end
 
   def forms_by_client
@@ -120,6 +118,11 @@ class ClientLegalFormsController < ApplicationController
       @client_legal_form = ClientLegalForm.find(params[:id])
     end
 
+    def init_new_client_legal_form
+      @client_legal_form = ClientLegalForm.new
+      @legal_form_dropdown = LegalForm.where(isSubform: false).map { |legal_form| [legal_form.name, legal_form.id] }
+    end
+
     # Only allow a list of trusted parameters through.
     def client_legal_form_params
       params.require(:client_legal_form).permit(:client_id, :legal_form_id, :first_login_date, :most_recent_login, :form_hash, :subFormQuestion_id, :stimulus)
@@ -133,13 +136,18 @@ class ClientLegalFormsController < ApplicationController
       @random_string
     end
 
+  def view_subforms(id)
+    # subforms = ClientLegalForm.where(subFormQuestion_id: id)
+    "test"
+  end
+
   def generate_csv(client_answers)
     CSV.generate(headers: true) do |csv|
       csv << ["Question", "Answer"] # Add your desired headers
       client_answers.each do |client_answer|
         if client_answer.question_type == "SubForm"
           puts "subfrom form outer"
-          subforms = ClientLegalForm.where(subFormQuestion_id: client_answer.id)
+          subforms = client_answer.get_subform
           subforms.each do |subform|
             puts 'subform data'
             subform.client_answers.each do |subform_answers|
